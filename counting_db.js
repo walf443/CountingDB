@@ -8,9 +8,7 @@ var CountingDB = function()
     };
 
     var server = net.createServer(function(c) {
-        console.log('server connected');
         c.on('end', function() {
-            console.log('server disconnected');
         });
 
         c.on('data', function(data) {
