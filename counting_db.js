@@ -12,17 +12,26 @@ var CountingDB = function()
 
         c.on('data', function(data) {
             var cmd = data.toString().split(/\s+/);
+            cmd.pop();
             switch ( cmd[0] ) {
                 case "ping" : {
                     c.write("PONG\r\n");
                     break;
                 }
                 case "add_keys": {
-                    c.write("OK\r\n");
+                    if ( cmd.length < 2 ) {
+                        c.write("ERROR\r\n");
+                    } else {
+                        c.write("OK\r\n");
+                    }
                     break;
                 }
                 case "delete_keys": {
-                    c.write("OK\r\n");
+                    if ( cmd.length < 2 ) {
+                        c.write("ERROR\r\n");
+                    } else {
+                        c.write("OK\r\n");
+                    }
                     break;
                 }
                 default: {
