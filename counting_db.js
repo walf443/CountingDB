@@ -47,9 +47,16 @@ var CountingDB = function()
                             if ( !db[key] ) {
                                 db[key] = {
                                     "set_count": 0,
+                                    "unique_count": {
+                                        value: 0,
+                                    },
                                 };
                             }
                             db[key]["set_count"]++;
+                            if ( db[key]["unique_count"] == null ) {
+                                db[key]["unique_count"][value] = 0;
+                            }
+                            db[key]["unique_count"][value]++;
                         }
                         c.write("OK\r\n");
                     }
@@ -64,7 +71,15 @@ var CountingDB = function()
                         for (var i=0; i < keys.length; i++ ) {
                             var key = keys[i];
                             if ( db[key] ) {
-                                c.write(["VALUE", key, db[key][property]].join(" ") + "\r\n");
+                                if ( property == "unique_count" ) {
+                                    var unique_count = 0;
+                                    for ( var j in db[key][property] ) {
+                                        unique_count++;
+                                    }
+                                    c.write(["VALUE", key, unique_count ].join(" ") + "\r\n");
+                                } else {
+                                    c.write(["VALUE", key, db[key][property]].join(" ") + "\r\n");
+                                }
                             }
                         }
                         c.write("END\r\n");
