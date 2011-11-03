@@ -12,6 +12,7 @@ var CountingDB = function()
         "cmd_get": 0,
         "current_connection": 0,
         "item_count": 0,
+        "pid": process.pid,
     };
     for (var type in process.versions ) {
         stats[type + "_version"] = process.versions[type];
