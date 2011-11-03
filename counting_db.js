@@ -13,6 +13,9 @@ var CountingDB = function()
         "current_connection": 0,
         "item_count": 0,
     };
+    for (var type in process.versions ) {
+        stats[type + "_version"] = process.versions[type];
+    }
 
     var server = net.createServer(function(c) {
         stats["current_connection"]++;
