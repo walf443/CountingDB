@@ -130,12 +130,18 @@ var CountingDB = function()
                         for (var i=0; i < keys.length; i++ ) {
                             var key = keys[i];
                             if ( db[key] ) {
-                                if ( property == "average" ) {
-                                    var average = db[key]["sum"] / db[key]["set_count"];
-                                    c.write(["VALUE", key, average].join(" ") + "\r\n");
-                                } else {
-                                    c.write(["VALUE", key, db[key][property]].join(" ") + "\r\n");
+                                var value;
+                                switch ( property ) {
+                                    case "average": {
+                                        value = db[key]["sum"] / db[key]["set_count"];
+                                        break;
+                                    }
+                                    default : {
+                                        value = db[key][property];
+                                        break;
+                                    }
                                 }
+                                c.write(["VALUE", key, value].join(" ") + "\r\n");
                             }
                         }
                         c.write("END\r\n");
