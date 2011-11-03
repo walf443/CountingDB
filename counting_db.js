@@ -2,8 +2,10 @@
 var CountingDB = function()
 {
     "use strict";
+    var DEFAULT_PORT = 26006;
 
     var net = require('net');
+
     var db = {
     };
 
@@ -123,7 +125,7 @@ var CountingDB = function()
         });
     });
 
-    server.listen(26006, function() {
+    server.listen(DEFAULT_PORT, function() {
         console.log('starting server');
     });
 }();
