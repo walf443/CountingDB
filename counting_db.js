@@ -96,6 +96,8 @@ var CountingDB = function()
                                 db[key] = {
                                     "set_count": 0,
                                     "unique_count": 0,
+                                    "sum": 0,
+                                    "sum_square": 0,
                                     "item": {
                                         value: 0,
                                     },
@@ -106,6 +108,11 @@ var CountingDB = function()
                                 stats["item_count"]++;
                                 db[key]["unique_count"]++;
                             };
+                            if ( value.match(/^[0-9]+$/) ) {
+                                var num = parseInt(value);
+                                db[key]["sum"] += num;
+                                db[key]["sum_square"] += ( num * num );
+                            }
                             db[key]["item"][value]++;
                         }
                         c.write("OK\r\n");
@@ -123,7 +130,12 @@ var CountingDB = function()
                         for (var i=0; i < keys.length; i++ ) {
                             var key = keys[i];
                             if ( db[key] ) {
-                                c.write(["VALUE", key, db[key][property]].join(" ") + "\r\n");
+                                if ( property == "average" ) {
+                                    var average = db[key]["sum"] / db[key]["set_count"];
+                                    c.write(["VALUE", key, average].join(" ") + "\r\n");
+                                } else {
+                                    c.write(["VALUE", key, db[key][property]].join(" ") + "\r\n");
+                                }
                             }
                         }
                         c.write("END\r\n");
