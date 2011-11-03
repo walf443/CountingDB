@@ -108,8 +108,8 @@ var CountingDB = function()
                                 stats["item_count"]++;
                                 db[key]["unique_count"]++;
                             };
-                            if ( value.match(/^[0-9]+$/) ) {
-                                var num = parseInt(value);
+                            if ( value.match(/^[0-9][0-9\.]*$/) ) {
+                                var num = parseFloat(value);
                                 db[key]["sum"] += num;
                                 db[key]["sum_square"] += ( num * num );
                             }
