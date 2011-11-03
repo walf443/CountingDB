@@ -10,10 +10,13 @@ var CountingDB = function()
     var stats = {
         "cmd_count": 0,
         "cmd_get": 0,
+        "current_connection": 0,
     };
 
     var server = net.createServer(function(c) {
+        stats["current_connection"]++;
         c.on('end', function() {
+            stats["current_connection"]--;
         });
 
         c.on('data', function(data) {
