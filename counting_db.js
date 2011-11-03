@@ -17,6 +17,8 @@ var CountingDB = function()
         "pid": process.pid,
         "uptime": 0,
     };
+
+    // FIXME: node v5.0 later has process.uptime()
     var uptime_event_id = setInterval(function() {
         stats["uptime"] += 1;
     }, 1000);
