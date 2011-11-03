@@ -136,6 +136,14 @@ var CountingDB = function()
                                         value = db[key]["sum"] / db[key]["set_count"];
                                         break;
                                     }
+                                    case "variance": {
+                                        // XXX: In case sum_square ** 2 is too big, it is not precise.
+                                        // V(x) = E(x**2) - E(x)**2
+                                        var avg = db[key]["sum"] / db[key]["set_count"];
+                                        var avg_square = db[key]["sum_square"] / db[key]["set_count"];
+                                        value = avg_square - avg * avg;
+                                        break;
+                                    }
                                     default : {
                                         value = db[key][property];
                                         break;
