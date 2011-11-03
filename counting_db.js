@@ -15,7 +15,12 @@ var CountingDB = function()
         "current_connection": 0,
         "item_count": 0,
         "pid": process.pid,
+        "uptime": 0,
     };
+    var uptime_event_id = setInterval(function() {
+        stats["uptime"] += 1;
+    }, 1000);
+
     for (var type in process.versions ) {
         stats[type + "_version"] = process.versions[type];
     }
