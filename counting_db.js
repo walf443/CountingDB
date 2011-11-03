@@ -18,6 +18,15 @@ var CountingDB = function()
         "uptime": 0,
     };
 
+    // FIXME: I don't like to hook process event not as possible.
+    process.on('exit', function() {
+        console.log('server terminate.');
+    });
+    // FIXME: should be handled by each exception.
+    process.on('uncaughtException', function(err) {
+        console.log('server caught unexpeced error: ' + err.message);
+    });
+
     // FIXME: node v5.0 later has process.uptime()
     var uptime_event_id = setInterval(function() {
         stats["uptime"] += 1;
@@ -31,6 +40,9 @@ var CountingDB = function()
         stats["current_connection"]++;
         c.on('end', function() {
             stats["current_connection"]--;
+        });
+        c.on('error', function(error) {
+            console.log("client socket error: " + error.message);
         });
 
         c.on('data', function(data) {
