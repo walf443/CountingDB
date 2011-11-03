@@ -7,6 +7,11 @@ var CountingDB = function()
     var db = {
     };
 
+    var stats = {
+        "cmd_count": 0,
+        "cmd_get": 0,
+    };
+
     var server = net.createServer(function(c) {
         c.on('end', function() {
         });
@@ -18,6 +23,18 @@ var CountingDB = function()
             switch ( command ) {
                 case "ping" : {
                     c.write("PONG\r\n");
+                    break;
+                }
+                case "stats" : {
+                    var memusage = process.memoryUsage();
+                    stats["rss"] = memusage["rss"];
+                    stats["heap_total"] = memusage["heapTotal"];
+                    stats["heap_used"] = memusage["heapUsed"];
+
+                    for (var key in stats ) {
+                        c.write("STAT " + key + " " + stats[key] + "\r\n");
+                    }
+                    c.write("END\r\n");
                     break;
                 }
                 case "add_keys": {
@@ -40,6 +57,8 @@ var CountingDB = function()
                     if ( cmd < 3 ) {
                         c.write("ERROR\r\n");
                     } else {
+                        stats["cmd_count"]++;
+
                         var value = cmd.shift();
                         var keys = cmd;
                         for (var i=0; i < keys.length; i++ ) {
@@ -66,6 +85,8 @@ var CountingDB = function()
                     if ( cmd < 3 ) {
                         c.write("ERROR\r\n");
                     } else {
+                        stats["cmd_get"]++;
+
                         var property = cmd.shift();
                         var keys = cmd;
                         for (var i=0; i < keys.length; i++ ) {
