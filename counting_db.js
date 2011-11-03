@@ -74,10 +74,18 @@ var CountingDB = function()
                     }
                     break;
                 }
-                case "delete_keys": {
-                    if ( cmd.length < 2 ) {
+                case "delete": {
+                    if ( cmd.length < 1 ) {
                         c.write("ERROR\r\n");
                     } else {
+                        var keys = cmd;
+
+                        for (var i=0; i < keys.length; i++ ) {
+                            var key = cmd[i];
+                            stats["item_count"] -= db[key]["unique_count"];
+                            db[key] = undefined;
+                        }
+
                         c.write("OK\r\n");
                     }
                     break;
