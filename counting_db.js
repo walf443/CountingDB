@@ -11,6 +11,7 @@ var CountingDB = function()
         "cmd_count": 0,
         "cmd_get": 0,
         "current_connection": 0,
+        "item_count": 0,
     };
 
     var server = net.createServer(function(c) {
@@ -75,9 +76,9 @@ var CountingDB = function()
                                 };
                             }
                             db[key]["set_count"]++;
-                            if ( db[key]["unique_count"] == null ) {
-                                db[key]["unique_count"][value] = 0;
-                            }
+                            if ( db[key]["unique_count"][value] == null ) {
+                                stats["item_count"]++;
+                            };
                             db[key]["unique_count"][value]++;
                         }
                         c.write("OK\r\n");
