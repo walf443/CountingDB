@@ -1,0 +1,17 @@
+{
+  "author": "Keiji Yoshimi",
+  "name": "counting_db",
+  "version": "0.0.1",
+  "repository": {
+    "url": "git://github.com/walf443/CountingDB.git"
+  },
+  "engines": {
+    "node": ">= v0.4.11"
+  },
+  "dependencies": {
+      "microtime": ">= 0.0.2"
+  },
+  "devDependencies": {
+      "qunit-tap": "1.0.1"
+  }
+}
