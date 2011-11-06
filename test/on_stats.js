@@ -5,7 +5,7 @@ var counting_db = require('counting_db/server');
 
 QUnit.module("testing server.on_stats", {});
 
-QUnit.test("testing server.on_stats", function() {
+QUnit.test("default case", function() {
     var server = new counting_db.server({
         "log_level": "warn",
     });
@@ -28,6 +28,76 @@ QUnit.test("testing server.on_stats", function() {
     QUnit.ok(client.writeBuffer.match(/STAT ares_version .+\r\n/), "ares_version OK");
     QUnit.ok(client.writeBuffer.match(/STAT ev_version .+\r\n/), "ev_version OK");
     QUnit.ok(client.writeBuffer.match(/STAT openssl_version .+\r\n/), "openssl_version OK");
+
+    QUnit.ok(client.writeBuffer.match(/END\r\n$/), "protocol should end with END");
+});
+
+QUnit.test("run cmd_get", function() {
+    var server = new counting_db.server({
+        "log_level": "warn",
+    });
+
+    var client = new t.mock_client();
+    server.stats["cmd_get"] = 1234;
+    server.on_stats(client);
+
+    QUnit.ok(client.writeBuffer.match(/STAT cmd_get 1234\r\n/), "cmd_get OK");
+
+    QUnit.ok(client.writeBuffer.match(/END\r\n$/), "protocol should end with END");
+});
+
+QUnit.test("run cmd_count", function() {
+    var server = new counting_db.server({
+        "log_level": "warn",
+    });
+
+    var client = new t.mock_client();
+    server.stats["cmd_count"] = 1234;
+    server.on_stats(client);
+
+    QUnit.ok(client.writeBuffer.match(/STAT cmd_count 1234\r\n/), "cmd_count OK");
+
+    QUnit.ok(client.writeBuffer.match(/END\r\n$/), "protocol should end with END");
+});
+
+QUnit.test("run current_connections", function() {
+    var server = new counting_db.server({
+        "log_level": "warn",
+    });
+
+    var client = new t.mock_client();
+    server.stats["current_connections"] = 1234;
+    server.on_stats(client);
+
+    QUnit.ok(client.writeBuffer.match(/STAT current_connections 1234\r\n/), "current_connections OK");
+
+    QUnit.ok(client.writeBuffer.match(/END\r\n$/), "protocol should end with END");
+});
+
+QUnit.test("run item_count", function() {
+    var server = new counting_db.server({
+        "log_level": "warn",
+    });
+
+    var client = new t.mock_client();
+    server.stats["item_count"] = 1234;
+    server.on_stats(client);
+
+    QUnit.ok(client.writeBuffer.match(/STAT item_count 1234\r\n/), "item_count OK");
+
+    QUnit.ok(client.writeBuffer.match(/END\r\n$/), "protocol should end with END");
+});
+
+QUnit.test("run uptime", function() {
+    var server = new counting_db.server({
+        "log_level": "warn",
+    });
+
+    var client = new t.mock_client();
+    server.stats["uptime"] = 1234;
+    server.on_stats(client);
+
+    QUnit.ok(client.writeBuffer.match(/STAT uptime 1234\r\n/), "uptime OK");
 
     QUnit.ok(client.writeBuffer.match(/END\r\n$/), "protocol should end with END");
 });
