@@ -7,11 +7,14 @@ USAGE
 	$ node bin/counting_db.js
 
 and try via another terminal
+
 	$ echo "count value key1 key2"
 	OK
+
 	$ echo "get set_count key1" | nc localhost 26006
 	VALUE key1 1
 	END
+
 	$ echo "get unique_count key1" | nc localhost 26006
 	VALUE key1 1
 	END
