@@ -22,6 +22,8 @@ QUnit.test("testing server.on_count", function() {
     QUnit.equal(server.db["weekly201130"]["unique_count"], 1, "unique_count should be updated");
     QUnit.equal(server.db["monthly201111"]["unique_count"], 1, "unique_count should be updated");
 
+    QUnit.equal(server.stats["item_count"], 3, "item_count should be updated");
+
     // retry
     client.writeBuffer = "";
     server.on_count(client, "12345", ["daily20111106", "weekly201130", "monthly201111"]);
@@ -34,6 +36,8 @@ QUnit.test("testing server.on_count", function() {
     QUnit.equal(server.db["daily20111106"]["unique_count"], 1, "unique_count should not be updated");
     QUnit.equal(server.db["weekly201130"]["unique_count"], 1, "unique_count should not be updated");
     QUnit.equal(server.db["monthly201111"]["unique_count"], 1, "unique_count should not be updated");
+
+    QUnit.equal(server.stats["item_count"], 3, "item_count should not be updated");
 });
 
 QUnit.start();
