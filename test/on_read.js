@@ -79,6 +79,10 @@ QUnit.test("in case that command is get", function() {
     var server = new counting_db.server({
         "log_level": "warn",
     });
+    server.db["key1"] = {
+        "set_count": 10,
+        "unique_count": 5,
+    };
 
     var client = new t.mock_client();
     server.on_read(client, "get\r\n");
@@ -90,11 +94,11 @@ QUnit.test("in case that command is get", function() {
 
     var client3 = new t.mock_client();
     server.on_read(client3, "get not_exist_property key1\r\n");
-    QUnit.equal(client3.writeBuffer, "ERROR\r\n", "response should be error because of lack of arguments");
+    QUnit.equal(client3.writeBuffer, "ERROR\r\n", "response should be error because of invalid property");
 
     var client4 = new t.mock_client();
-    server.on_read(client4, "get set_count foo bar\r\n");
-    QUnit.equal(client4.writeBuffer, "END\r\n", "protocol should end with END");
+    server.on_read(client4, "get set_count key1 key2\r\n");
+    QUnit.ok(client4.writeBuffer.match(/END\r\n$/), "protocol should end with END");
 });
 
 QUnit.start();
