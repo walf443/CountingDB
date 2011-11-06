@@ -43,6 +43,7 @@ you should get dependency.
 	$ npm install .
 
 And then, you can easy to test with Test::Harness's prove command
+
 	$ prove -v --exec=node test/*.js
 
 or
