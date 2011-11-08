@@ -1,6 +1,6 @@
 
 require('../test_helper.js');
-var counting_db = require('counting_db/server');
+var counting_db = require('../lib/counting_db/server');
 "use strict";
 
 QUnit.module("testing server function", {});
