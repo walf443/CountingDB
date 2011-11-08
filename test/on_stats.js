@@ -26,7 +26,7 @@ QUnit.test("default case", function() {
     QUnit.ok(client.writeBuffer.match(/STAT node_version .+\r\n/), "node_version OK");
     QUnit.ok(client.writeBuffer.match(/STAT v8_version .+\r\n/), "v8_version OK");
     QUnit.ok(client.writeBuffer.match(/STAT ares_version .+\r\n/), "ares_version OK");
-    QUnit.ok(client.writeBuffer.match(/STAT ev_version .+\r\n/), "ev_version OK");
+    QUnit.ok(client.writeBuffer.match(/STAT (e|u)v_version .+\r\n/), "ev_version or uv_version OK");
     QUnit.ok(client.writeBuffer.match(/STAT openssl_version .+\r\n/), "openssl_version OK");
 
     QUnit.ok(client.writeBuffer.match(/END\r\n$/), "protocol should end with END");
